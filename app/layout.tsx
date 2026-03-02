@@ -18,11 +18,17 @@ export const metadata: Metadata = {
   title: "Crewly — AI Crew for Your Business",
   description:
     "Deploy AI agents that join your team on WhatsApp, Telegram, Slack, and more. Tell us what you need — we build and deploy your crew.",
+  metadataBase: new URL("https://crewly.chat"),
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
   openGraph: {
     title: "Crewly — AI Crew for Your Business",
     description:
       "Deploy AI agents that join your team on WhatsApp, Telegram, Slack, and more.",
     type: "website",
+    url: "https://crewly.chat",
   },
 };
 

@@ -26,7 +26,7 @@ export default function Footer() {
             <a href="#pricing" className="hover:text-ink transition-colors">
               Pricing
             </a>
-            <a href="mailto:hello@crewly.ai" className="hover:text-ink transition-colors">
+            <a href="mailto:hello@crewly.chat" className="hover:text-ink transition-colors">
               Contact
             </a>
           </div>

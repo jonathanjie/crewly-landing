@@ -82,10 +82,10 @@ export default function CTA() {
               </svg>
             </a>
             <a
-              href="mailto:hello@crewly.ai"
+              href="mailto:hello@crewly.chat"
               className="inline-flex items-center justify-center gap-2 border border-cream/20 text-cream/80 font-medium px-8 py-4 rounded-full hover:border-cream/40 hover:text-cream transition-all text-base"
             >
-              hello@crewly.ai
+              hello@crewly.chat
             </a>
           </div>
 
