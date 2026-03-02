@@ -50,7 +50,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.25 }}
-              className="mt-5 md:mt-6 text-base md:text-xl text-ink-light leading-relaxed max-w-lg"
+              className="mt-5 md:mt-6 text-base md:text-xl text-ink-light leading-relaxed max-w-full md:max-w-lg"
             >
               Tell us what you need. We deploy AI agents that join your team on
               WhatsApp, Slack, Telegram — wherever your business already runs.
@@ -87,7 +87,7 @@ export default function Hero() {
           </div>
 
           {/* Right: Crew avatars arriving */}
-          <div className="flex justify-center">
+          <div className="flex justify-center overflow-hidden">
             <div className="relative">
               <svg
                 className="absolute inset-0 w-full h-full pointer-events-none"
@@ -107,7 +107,7 @@ export default function Hero() {
                 />
               </svg>
 
-              <div className="flex gap-6 md:gap-8">
+              <div className="flex gap-4 sm:gap-6 md:gap-8">
                 {crew.map((member, i) => (
                   <CrewAvatar
                     key={member.name}

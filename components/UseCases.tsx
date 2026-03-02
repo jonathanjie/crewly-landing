@@ -400,24 +400,16 @@ export default function UseCases() {
                   </button>
 
                   {/* Inline chat demo for mobile */}
-                  <AnimatePresence>
-                    {activeCase === c.slug && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="lg:hidden overflow-hidden mt-3"
-                      >
-                        <ChatDemo
-                          messages={c.chatDemo}
-                          agentName={c.agentName}
-                          agentEmoji={c.emoji}
-                          isActive={true}
-                        />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  {activeCase === c.slug && (
+                    <div className="lg:hidden mt-3">
+                      <ChatDemo
+                        messages={c.chatDemo}
+                        agentName={c.agentName}
+                        agentEmoji={c.emoji}
+                        isActive={true}
+                      />
+                    </div>
+                  )}
                 </motion.div>
               ))}
             </AnimatePresence>

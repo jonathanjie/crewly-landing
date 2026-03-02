@@ -14,7 +14,7 @@ type CrewAvatarProps = {
 const sizes = {
   sm: { container: "w-16 h-16", emoji: "text-2xl", label: "text-xs" },
   md: { container: "w-24 h-24", emoji: "text-4xl", label: "text-sm" },
-  lg: { container: "w-32 h-32", emoji: "text-5xl", label: "text-base" },
+  lg: { container: "w-20 sm:w-24 md:w-32 h-20 sm:h-24 md:h-32", emoji: "text-3xl sm:text-4xl md:text-5xl", label: "text-xs sm:text-sm md:text-base" },
 };
 
 export default function CrewAvatar({
