@@ -10,11 +10,11 @@ import { categoryLabels } from "@/lib/types";
 
 /** Map categories to integration blocks typically required. */
 const categoryIntegrations: Record<string, string[]> = {
-  "knowledge-management": ["Document storage (Google Drive / SharePoint)", "Internal knowledge base"],
-  "customer-engagement": ["WhatsApp Business", "Telegram Bot", "Email (SMTP)"],
-  "operations-automation": ["Slack / Teams", "Webhook endpoints", "Calendar API"],
+  "knowledge-intel": ["Document storage (Google Drive / SharePoint)", "Internal knowledge base (Notion / Confluence)"],
+  "customer-ops": ["WhatsApp Business", "Telegram Bot", "Email (SMTP)", "CRM (HubSpot)"],
+  "team-ops": ["Slack / Teams", "Jira / Project management", "Calendar API"],
+  "legal-finance": ["Document management", "QuickBooks / Accounting", "Compliance databases"],
   "content-generation": ["CMS or publishing platform", "Brand asset library"],
-  "team-productivity": ["Slack / Teams", "Project management tool", "Calendar API"],
 };
 
 export default function TemplateDetail() {
@@ -181,26 +181,29 @@ export default function TemplateDetail() {
       )}
 
       {/* Config schema preview */}
-      {template.config_schema && Object.keys(template.config_schema).length > 0 && (
-        <div className="bg-white rounded-2xl border border-ink/5 p-6">
-          <h2 className="font-[family-name:var(--font-display)] font-bold text-ink text-sm mb-4">
-            Configuration Options
-          </h2>
-          <p className="text-xs text-ink-light mb-4">
-            These settings can be customized during the deployment wizard.
-          </p>
-          <div className="space-y-2">
-            {Object.keys(template.config_schema).map((key) => (
-              <div
-                key={key}
-                className="flex items-center gap-2 p-3 rounded-xl bg-ink/3"
-              >
-                <span className="text-xs font-mono text-ink-faint">{key}</span>
-              </div>
-            ))}
+      {(() => {
+        const schema = template.config_schema as Record<string, unknown> | undefined;
+        const props = schema?.properties as Record<string, Record<string, string>> | undefined;
+        if (!props || Object.keys(props).length === 0) return null;
+        return (
+          <div className="bg-white rounded-2xl border border-ink/5 p-6">
+            <h2 className="font-[family-name:var(--font-display)] font-bold text-ink text-sm mb-4">
+              Configuration Options
+            </h2>
+            <p className="text-xs text-ink-light mb-4">
+              These settings can be customized during the deployment wizard.
+            </p>
+            <div className="space-y-2">
+              {Object.entries(props).map(([key, prop]) => (
+                <div key={key} className="flex items-center justify-between p-3 rounded-xl bg-ink/3">
+                  <span className="text-sm text-ink font-medium">{key.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase())}</span>
+                  <span className="text-xs text-ink-faint">{prop?.type ?? "text"}</span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 }
