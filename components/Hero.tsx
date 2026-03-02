@@ -121,12 +121,55 @@ export default function Hero() {
           </div>
         </div>
 
+        {/* IMDA GenAIxDL Funded badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.0, duration: 0.6 }}
+          className="mt-10 md:mt-20"
+        >
+          <a
+            href="/grant-info"
+            className="inline-flex items-center gap-2 bg-teal/10 border border-teal/20 text-teal-deep text-xs font-medium px-4 py-2 rounded-full hover:bg-teal/15 hover:border-teal/30 transition-all group"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-teal-deep"
+            >
+              <path d="M20 6L9 17l-5-5" />
+            </svg>
+            IMDA GenAIxDL Funded
+            <svg
+              width="10"
+              height="10"
+              viewBox="0 0 14 14"
+              fill="none"
+              className="opacity-40 group-hover:opacity-70 transition-opacity"
+            >
+              <path
+                d="M1 7h12m0 0L8.5 2.5M13 7l-4.5 4.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </a>
+        </motion.div>
+
         {/* Social proof strip */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.8 }}
-          className="mt-12 md:mt-28 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-x-8 gap-y-3 text-sm text-ink-faint"
+          className="mt-6 md:mt-10 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-x-8 gap-y-3 text-sm text-ink-faint"
         >
           <span>Trusted by teams at</span>
           <div className="flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-2 font-[family-name:var(--font-display)] font-semibold text-ink-light/60 text-sm sm:text-base">
