@@ -168,7 +168,7 @@ export default function ROIDashboard() {
             <SummaryCard
               label="Hours Saved"
               value={totalHoursSaved.toFixed(0)}
-              sub={`~S$${totalCostSaved.toLocaleString()} value`}
+              sub={`~S$${totalCostSaved.toLocaleString("en-SG", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} value`}
               accent="bg-coral/10 text-coral-deep"
             />
           </div>
@@ -279,13 +279,13 @@ export default function ROIDashboard() {
                   <div className="flex justify-between text-sm">
                     <span className="text-ink-light">Weekly cost</span>
                     <span className="text-ink font-medium">
-                      S${(totalAgents * inputs.hoursPerAgentPerWeek * inputs.hourlyRate).toLocaleString()}
+                      S${(totalAgents * inputs.hoursPerAgentPerWeek * inputs.hourlyRate).toLocaleString("en-SG", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-ink-light">Total ({inputs.weeksDeployed}w)</span>
                     <span className="text-ink font-bold">
-                      S${(totalAgents * inputs.hoursPerAgentPerWeek * inputs.hourlyRate * inputs.weeksDeployed).toLocaleString()}
+                      S${(totalAgents * inputs.hoursPerAgentPerWeek * inputs.hourlyRate * inputs.weeksDeployed).toLocaleString("en-SG", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
                   </div>
                 </div>
@@ -301,7 +301,7 @@ export default function ROIDashboard() {
                   <div className="flex justify-between text-sm">
                     <span className="text-ink-light">Cost saved</span>
                     <span className="text-ink font-medium">
-                      S${totalCostSaved.toLocaleString()}
+                      S${totalCostSaved.toLocaleString("en-SG", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
