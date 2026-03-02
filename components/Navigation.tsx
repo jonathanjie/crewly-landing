@@ -58,6 +58,12 @@ export default function Navigation() {
             Pricing
           </a>
           <a
+            href="/grant-info"
+            className="text-sm text-teal-deep hover:text-teal transition-colors font-medium"
+          >
+            Grant
+          </a>
+          <a
             href="#get-started"
             className="inline-flex items-center gap-2 bg-ink text-cream text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-ink/90 transition-colors"
           >
@@ -136,6 +142,13 @@ export default function Navigation() {
                 className="text-ink-light hover:text-ink transition-colors"
               >
                 Pricing
+              </a>
+              <a
+                href="/grant-info"
+                onClick={() => setMobileOpen(false)}
+                className="text-teal-deep hover:text-teal transition-colors font-medium"
+              >
+                Grant
               </a>
               <a
                 href="#get-started"
