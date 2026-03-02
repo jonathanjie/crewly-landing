@@ -173,3 +173,19 @@ To containerize later:
 - Environment variables for API URL, Supabase URL (already parameterized)
 
 No architectural changes needed — just deployment config.
+
+---
+
+## Sprint 2 Completion Notes (2026-03-02)
+
+### Delivered
+- CORS proxy route (app/api/fleet/[...path]/route.ts) — eliminates cross-origin issues
+- Grant eligibility checker (/portal/grant) — client-side SSIC/SME/funding calculator
+- ROI dashboard (/portal/roi) — per-agent metrics, before/after comparison, PDF export
+- Public grant info page (/grant-info) — GenAIxDL explainer with eligibility criteria
+- Mobile responsive portal nav — hamburger menu at <=640px
+
+### Routes (cumulative)
+- / (landing), /login, /grant-info (public)
+- /portal, /portal/agents, /portal/agents/[id], /portal/deploy, /portal/grant, /portal/roi
+- /api/fleet/[...path] (proxy)
