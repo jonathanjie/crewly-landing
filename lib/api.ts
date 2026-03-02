@@ -1,8 +1,6 @@
 import { supabase } from "./supabase";
 import type { Org, AppTemplate, AppInstance, InstanceHealth } from "./types";
 
-const API = process.env.NEXT_PUBLIC_FLEET_API_BASE ?? "";
-
 async function portalFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
   const session = (await supabase?.auth.getSession())?.data.session;
 
@@ -10,7 +8,7 @@ async function portalFetch<T>(path: string, options: RequestInit = {}): Promise<
     throw new Error("Not authenticated");
   }
 
-  const res = await fetch(`${API}${path}`, {
+  const res = await fetch(`/api/fleet${path}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
