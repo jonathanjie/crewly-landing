@@ -24,8 +24,12 @@ Customer-facing AI-agent-as-a-service platform targeting Singapore SMEs via IMDA
 | `app/portal/deploy/[slug]/page.tsx` | Template detail — skills, integrations, deploy CTA |
 | `app/portal/use-cases/page.tsx` | GenAIxDL 5-category use case mapping with template links |
 | `app/portal/error.tsx` | Portal error boundary — friendly error page with retry |
+| `app/portal/loading.tsx` | Portal-wide loading skeleton — shimmer cards, branded dot animation |
+| `app/portal/settings/page.tsx` | User settings — email display, password change, sign out, account deletion |
+| `app/portal/org/page.tsx` | Organization management — details, plan badge, members, invite form |
 | `app/portal/grant/page.tsx` | Grant eligibility checker — SSIC/SME validation, funding calculator |
 | `app/portal/roi/page.tsx` | ROI dashboard — per-agent metrics, before/after comparison, PDF export |
+| `app/not-found.tsx` | Custom 404 page — Crewly branded, dashboard + home CTAs |
 | `app/api/fleet/[...path]/route.ts` | CORS proxy — forwards all methods to Fleet Control API server-side |
 | `lib/supabase.ts` | Supabase client (null-safe when env vars missing) |
 | `lib/auth-context.tsx` | AuthProvider + useAuth hook (session, loading, signOut) |
@@ -41,6 +45,8 @@ Customer-facing AI-agent-as-a-service platform targeting Singapore SMEs via IMDA
 | `components/Testimonials.tsx` | Landing testimonials |
 | `components/CTA.tsx` | Landing CTA section |
 | `components/Footer.tsx` | Landing footer |
+| `docs/caddy/crewly.caddyfile` | Caddy reverse proxy config with security headers |
+| `scripts/deploy.sh` | Production deploy script (git pull, build, pm2 restart) |
 | `components/CrewAvatar.tsx` | Crew member avatar component |
 | `app/globals.css` | Theme tokens, grain overlay, print CSS, blob animations |
 
@@ -65,6 +71,8 @@ Customer-facing AI-agent-as-a-service platform targeting Singapore SMEs via IMDA
 | `/portal/use-cases` | GenAIxDL use case category mapping |
 | `/portal/grant` | Grant eligibility checker + funding calculator |
 | `/portal/roi` | ROI dashboard with PDF export |
+| `/portal/org` | Organization details, members, invite |
+| `/portal/settings` | Account settings, password change |
 
 ### API
 | Route | Purpose |
@@ -83,7 +91,7 @@ Customer-facing AI-agent-as-a-service platform targeting Singapore SMEs via IMDA
 
 ### Navigation
 - Landing page: `components/Navigation.tsx` — scroll-aware fixed nav, "Grant" link to `/grant-info`
-- Portal: `app/portal/layout.tsx` — sticky nav with 5 links (Dashboard, My Agents, Deploy, Grant, ROI)
+- Portal: `app/portal/layout.tsx` — sticky nav with 8 links (Dashboard, My Agents, Deploy, Use Cases, Grant, ROI, Org, Settings)
 - Mobile responsive: hamburger menu at `sm:` breakpoint (640px), closes on route change
 - Landing mobile uses Framer Motion AnimatePresence; portal mobile uses CSS max-height transition
 

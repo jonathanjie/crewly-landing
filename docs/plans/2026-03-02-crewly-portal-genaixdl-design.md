@@ -216,3 +216,22 @@ No architectural changes needed — just deployment config.
 - / (landing), /login, /grant-info (public)
 - /portal, /portal/agents, /portal/agents/[id], /portal/agents/[id]/chat, /portal/deploy, /portal/deploy/[slug], /portal/use-cases, /portal/grant, /portal/roi
 - /api/fleet/[...path] (proxy)
+
+---
+
+## Sprint 4 Completion Notes (2026-03-02)
+
+### Delivered
+- User settings page (/portal/settings) — email display (read-only), password change form (current + new + confirm via Supabase updateUser), sign out button, account deletion "contact support" mailto link
+- Organization page (/portal/org) — org details card with plan tier badge, member count, member list with role badges (owner/admin/member), invite member form, plan upgrade CTA linking to pricing section. Gracefully degrades when members endpoint is not yet available on Fleet Control
+- Custom 404 page (app/not-found.tsx) — Crewly branded with teal/coral/teal dots, "Go to Dashboard" and "Back to Home" CTAs
+- Portal loading skeleton (app/portal/loading.tsx) — branded three-dot bounce animation (teal/coral/teal-deep), shimmer stat cards and content card matching dashboard layout
+- Caddy config (docs/caddy/crewly.caddyfile) — reverse proxy to localhost:3000 with HSTS, X-Content-Type-Options, X-Frame-Options, CSP, Referrer-Policy, Permissions-Policy, COOP, -Server
+- Deploy script (scripts/deploy.sh) — git pull, npm ci, npm run build, pm2 restart/start
+- Portal nav expanded — added "Org" and "Settings" links
+- API client extended — getOrgMembers and inviteOrgMember methods, OrgMember type, planLabels/planColors helpers
+
+### Routes (cumulative)
+- / (landing), /login, /grant-info (public)
+- /portal, /portal/agents, /portal/agents/[id], /portal/agents/[id]/chat, /portal/deploy, /portal/deploy/[slug], /portal/use-cases, /portal/grant, /portal/roi, /portal/org, /portal/settings
+- /api/fleet/[...path] (proxy)
