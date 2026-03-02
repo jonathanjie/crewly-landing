@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/portal/agents", label: "My Agents" },
   { href: "/portal/deploy", label: "Deploy" },
   { href: "/portal/grant", label: "Grant" },
+  { href: "/portal/roi", label: "ROI" },
 ];
 
 export default function PortalLayout({ children }: { children: React.ReactNode }) {

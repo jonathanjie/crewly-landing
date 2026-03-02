@@ -148,3 +148,36 @@ html {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* Print styles for PDF export */
+@media print {
+  body {
+    background: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .grain::before {
+    display: none !important;
+  }
+
+  nav {
+    position: static !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid #e5e5e5 !important;
+    backdrop-filter: none !important;
+    background: white !important;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .print\:break-before-page {
+    break-before: page;
+  }
+
+  .print\:mb-4 {
+    margin-bottom: 1rem !important;
+  }
+}
