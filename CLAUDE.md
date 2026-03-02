@@ -19,7 +19,11 @@ Customer-facing AI-agent-as-a-service platform targeting Singapore SMEs via IMDA
 | `app/portal/page.tsx` | Dashboard — agent count, quick-deploy CTA, activity feed |
 | `app/portal/agents/page.tsx` | My Agents grid with health cards |
 | `app/portal/agents/[id]/page.tsx` | Agent detail — overview, skills, channels tabs |
+| `app/portal/agents/[id]/chat/page.tsx` | Agent chat UI — message bubbles, demo/preview mode |
 | `app/portal/deploy/page.tsx` | 3-step deploy wizard (category, configure, deploy) |
+| `app/portal/deploy/[slug]/page.tsx` | Template detail — skills, integrations, deploy CTA |
+| `app/portal/use-cases/page.tsx` | GenAIxDL 5-category use case mapping with template links |
+| `app/portal/error.tsx` | Portal error boundary — friendly error page with retry |
 | `app/portal/grant/page.tsx` | Grant eligibility checker — SSIC/SME validation, funding calculator |
 | `app/portal/roi/page.tsx` | ROI dashboard — per-agent metrics, before/after comparison, PDF export |
 | `app/api/fleet/[...path]/route.ts` | CORS proxy — forwards all methods to Fleet Control API server-side |
@@ -55,7 +59,10 @@ Customer-facing AI-agent-as-a-service platform targeting Singapore SMEs via IMDA
 | `/portal` | Dashboard overview |
 | `/portal/agents` | Deployed agents grid |
 | `/portal/agents/[id]` | Agent detail (health, skills, channels) |
+| `/portal/agents/[id]/chat` | Agent chat UI (preview/live) |
 | `/portal/deploy` | 3-step deploy wizard |
+| `/portal/deploy/[slug]` | Template detail page |
+| `/portal/use-cases` | GenAIxDL use case category mapping |
 | `/portal/grant` | Grant eligibility checker + funding calculator |
 | `/portal/roi` | ROI dashboard with PDF export |
 
