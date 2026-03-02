@@ -1,10 +1,11 @@
 // app/portal/agents/[id]/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import type { AppInstance, InstanceHealth } from "@/lib/types";
+import { statusDotColor } from "@/lib/types";
 
 type Tab = "overview" | "skills" | "channels";
 
@@ -16,39 +17,38 @@ export default function AgentDetail() {
   const [health, setHealth] = useState<InstanceHealth | null>(null);
   const [tab, setTab] = useState<Tab>("overview");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [actionLoading, setActionLoading] = useState(false);
+
+  const refresh = useCallback(async () => {
+    const [a, h] = await Promise.all([
+      api.getDeployment(id),
+      api.getHealth(id).catch(() => null),
+    ]);
+    setAgent(a);
+    setHealth(h);
+  }, [id]);
 
   useEffect(() => {
     (async () => {
       try {
-        const [a, h] = await Promise.all([
-          api.getDeployment(id),
-          api.getHealth(id).catch(() => null),
-        ]);
-        setAgent(a);
-        setHealth(h);
-      } catch {
-        // will show error state
+        await refresh();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load agent");
       } finally {
         setLoading(false);
       }
     })();
-  }, [id]);
+  }, [refresh]);
 
   const handleAction = async (action: "restart" | "stop") => {
     setActionLoading(true);
     try {
       if (action === "restart") await api.restartDeployment(id);
       else await api.stopDeployment(id);
-      // Refresh data
-      const [a, h] = await Promise.all([
-        api.getDeployment(id),
-        api.getHealth(id).catch(() => null),
-      ]);
-      setAgent(a);
-      setHealth(h);
-    } catch {
-      // handle silently
+      await refresh();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : `Failed to ${action} agent`);
     } finally {
       setActionLoading(false);
     }
@@ -56,6 +56,17 @@ export default function AgentDetail() {
 
   if (loading) {
     return <div className="animate-pulse bg-white rounded-2xl h-64 border border-ink/5" />;
+  }
+
+  if (error && !agent) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-coral-deep text-sm mb-2">{error}</p>
+        <button onClick={() => router.back()} className="text-teal-deep text-sm mt-2 hover:underline">
+          ← Go back
+        </button>
+      </div>
+    );
   }
 
   if (!agent) {
@@ -69,7 +80,6 @@ export default function AgentDetail() {
     );
   }
 
-  const isOnline = health?.status === "online";
   const tabs: { key: Tab; label: string }[] = [
     { key: "overview", label: "Overview" },
     { key: "skills", label: "Skills" },
@@ -84,7 +94,7 @@ export default function AgentDetail() {
           <button onClick={() => router.back()} className="text-ink-faint hover:text-ink text-sm">
             ←
           </button>
-          <div className={`w-3 h-3 rounded-full ${isOnline ? "bg-teal" : "bg-ink-faint"}`} />
+          <div className={`w-3 h-3 rounded-full ${statusDotColor(agent.status, health?.status)}`} />
           <h1 className="font-[family-name:var(--font-display)] text-xl font-bold text-ink">
             {agent.name}
           </h1>
@@ -110,6 +120,12 @@ export default function AgentDetail() {
         </div>
       </div>
 
+      {error && (
+        <div className="bg-coral/10 text-coral-deep text-sm px-4 py-3 rounded-xl mb-4">
+          {error}
+        </div>
+      )}
+
       {/* Tabs */}
       <div className="flex gap-1 mb-6 border-b border-ink/5 pb-px">
         {tabs.map((t) => (
@@ -131,19 +147,19 @@ export default function AgentDetail() {
       <div className="bg-white rounded-2xl border border-ink/5 p-6">
         {tab === "overview" && (
           <div className="space-y-4">
-            <Row label="Status" value={isOnline ? "Online" : "Offline"} />
+            <Row label="Status" value={health?.status === "online" ? "Online" : "Offline"} />
             <Row label="Agent ID" value={agent.agent_id ?? "—"} mono />
             <Row label="Created" value={agent.created_at ? new Date(agent.created_at).toLocaleDateString() : "—"} />
             {health?.last_heartbeat && (
               <Row label="Last Heartbeat" value={new Date(health.last_heartbeat).toLocaleString()} />
             )}
-            {health?.host && typeof health.host === "object" && (
+            {health?.host && (
               <>
-                {(health.host as Record<string, unknown>).cpu_percent != null && (
-                  <Row label="CPU" value={`${(health.host as Record<string, number>).cpu_percent}%`} />
+                {health.host.cpu_percent != null && (
+                  <Row label="CPU" value={`${health.host.cpu_percent}%`} />
                 )}
-                {(health.host as Record<string, unknown>).memory_percent != null && (
-                  <Row label="Memory" value={`${(health.host as Record<string, number>).memory_percent}%`} />
+                {health.host.memory_percent != null && (
+                  <Row label="Memory" value={`${health.host.memory_percent}%`} />
                 )}
               </>
             )}

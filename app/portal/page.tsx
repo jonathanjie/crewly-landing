@@ -3,27 +3,24 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { api } from "@/lib/api";
+import { fetchAllDeployments } from "@/lib/api";
 import type { Org, AppInstance } from "@/lib/types";
+import { statusDotColor } from "@/lib/types";
 
 export default function Dashboard() {
   const [orgs, setOrgs] = useState<Org[]>([]);
   const [agents, setAgents] = useState<AppInstance[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
       try {
-        const orgsData = await api.listOrgs();
-        setOrgs(orgsData);
-        const allAgents: AppInstance[] = [];
-        for (const org of orgsData) {
-          const deps = await api.listDeployments(org.slug);
-          allAgents.push(...deps);
-        }
-        setAgents(allAgents);
-      } catch {
-        // Silently degrade — user sees empty state
+        const { orgs: o, agents: a } = await fetchAllDeployments();
+        setOrgs(o);
+        setAgents(a);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load dashboard");
       } finally {
         setLoading(false);
       }
@@ -43,6 +40,10 @@ export default function Dashboard() {
           {[1, 2, 3].map((i) => (
             <div key={i} className="bg-white rounded-2xl p-6 border border-ink/5 animate-pulse h-24" />
           ))}
+        </div>
+      ) : error ? (
+        <div className="bg-coral/10 text-coral-deep text-sm px-4 py-3 rounded-xl mb-4">
+          {error}
         </div>
       ) : (
         <>
@@ -89,9 +90,7 @@ export default function Dashboard() {
                     className="flex items-center justify-between p-3 rounded-xl hover:bg-ink/3 transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`w-2 h-2 rounded-full ${
-                        agent.status === "active" ? "bg-teal" : agent.status === "failed" ? "bg-coral" : "bg-ink-faint"
-                      }`} />
+                      <div className={`w-2 h-2 rounded-full ${statusDotColor(agent.status)}`} />
                       <span className="text-sm font-medium text-ink">{agent.name}</span>
                     </div>
                     <span className="text-xs text-ink-faint capitalize">{agent.status}</span>

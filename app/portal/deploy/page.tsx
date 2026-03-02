@@ -47,8 +47,8 @@ export default function DeployWizard() {
     setError(null);
     try {
       const instance = await api.deploy({
-        organization_id: orgs[0].id,
-        template_id: selectedTemplate.id,
+        org_slug: orgs[0].slug,
+        template_slug: selectedTemplate.slug,
         name: agentName.trim(),
         config: { agent_name: agentName.trim() },
       });

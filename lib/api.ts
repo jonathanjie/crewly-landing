@@ -5,13 +5,16 @@ const API = process.env.NEXT_PUBLIC_FLEET_API_BASE ?? "";
 
 async function portalFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
   const session = (await supabase?.auth.getSession())?.data.session;
-  const token = session?.access_token ?? "";
+
+  if (!session?.access_token) {
+    throw new Error("Not authenticated");
+  }
 
   const res = await fetch(`${API}${path}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${session.access_token}`,
       ...options.headers,
     },
   });
@@ -28,8 +31,8 @@ export const api = {
   listOrgs: () => portalFetch<Org[]>("/api/v1/orgs"),
   listTemplates: () => portalFetch<AppTemplate[]>("/api/v1/catalog"),
   listDeployments: (orgSlug: string) =>
-    portalFetch<AppInstance[]>(`/api/v1/deployments?org=${orgSlug}`),
-  deploy: (body: { organization_id: string; template_id: string; name: string; config: Record<string, unknown> }) =>
+    portalFetch<AppInstance[]>(`/api/v1/deployments?org_slug=${encodeURIComponent(orgSlug)}`),
+  deploy: (body: { org_slug: string; template_slug: string; name: string; config: Record<string, unknown> }) =>
     portalFetch<AppInstance>("/api/v1/deployments", { method: "POST", body: JSON.stringify(body) }),
   getDeployment: (id: string) =>
     portalFetch<AppInstance>(`/api/v1/deployments/${id}`),
@@ -40,3 +43,10 @@ export const api = {
   stopDeployment: (id: string) =>
     portalFetch<{ status: string }>(`/api/v1/deployments/${id}/stop`, { method: "POST" }),
 };
+
+/** Fetch all deployments across all user orgs in parallel. */
+export async function fetchAllDeployments(): Promise<{ orgs: Org[]; agents: AppInstance[] }> {
+  const orgs = await api.listOrgs();
+  const nested = await Promise.all(orgs.map((o) => api.listDeployments(o.slug)));
+  return { orgs, agents: nested.flat() };
+}

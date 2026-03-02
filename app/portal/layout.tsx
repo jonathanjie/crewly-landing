@@ -56,7 +56,7 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
                   key={href}
                   href={href}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                    pathname === href
+                    pathname === href || (href !== "/portal" && pathname.startsWith(href))
                       ? "bg-teal/10 text-teal-deep"
                       : "text-ink-light hover:text-ink hover:bg-ink/5"
                   }`}
