@@ -3,11 +3,12 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import { api } from "@/lib/api";
 import type { AppInstance, InstanceHealth } from "@/lib/types";
 import { statusDotColor } from "@/lib/types";
 
-type Tab = "overview" | "skills" | "channels";
+type Tab = "overview" | "skills" | "channels" | "chat";
 
 export default function AgentDetail() {
   const params = useParams();
@@ -80,10 +81,11 @@ export default function AgentDetail() {
     );
   }
 
-  const tabs: { key: Tab; label: string }[] = [
+  const tabs: { key: Tab; label: string; href?: string }[] = [
     { key: "overview", label: "Overview" },
     { key: "skills", label: "Skills" },
     { key: "channels", label: "Channels" },
+    { key: "chat", label: "Chat", href: `/portal/agents/${id}/chat` },
   ];
 
   return (
@@ -103,6 +105,15 @@ export default function AgentDetail() {
           </span>
         </div>
         <div className="flex gap-2">
+          <Link
+            href={`/portal/agents/${id}/chat`}
+            className="text-xs bg-teal-deep text-white px-3 py-1.5 rounded-lg hover:bg-teal-deep/90 transition-colors flex items-center gap-1.5"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+            </svg>
+            Chat
+          </Link>
           <button
             onClick={() => handleAction("restart")}
             disabled={actionLoading}
@@ -128,19 +139,34 @@ export default function AgentDetail() {
 
       {/* Tabs */}
       <div className="flex gap-1 mb-6 border-b border-ink/5 pb-px">
-        {tabs.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={`px-4 py-2 text-xs font-medium rounded-t-lg transition-colors ${
-              tab === t.key
-                ? "bg-white text-teal-deep border border-ink/5 border-b-white -mb-px"
-                : "text-ink-light hover:text-ink"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
+        {tabs.map((t) =>
+          t.href ? (
+            <Link
+              key={t.key}
+              href={t.href}
+              className="px-4 py-2 text-xs font-medium rounded-t-lg transition-colors text-ink-light hover:text-ink flex items-center gap-1"
+            >
+              {t.label}
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-40">
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+            </Link>
+          ) : (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key)}
+              className={`px-4 py-2 text-xs font-medium rounded-t-lg transition-colors ${
+                tab === t.key
+                  ? "bg-white text-teal-deep border border-ink/5 border-b-white -mb-px"
+                  : "text-ink-light hover:text-ink"
+              }`}
+            >
+              {t.label}
+            </button>
+          ),
+        )}
       </div>
 
       {/* Tab content */}

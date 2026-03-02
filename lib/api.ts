@@ -40,6 +40,11 @@ export const api = {
     portalFetch<{ status: string }>(`/api/v1/deployments/${id}/restart`, { method: "POST" }),
   stopDeployment: (id: string) =>
     portalFetch<{ status: string }>(`/api/v1/deployments/${id}/stop`, { method: "POST" }),
+  sendChat: (id: string, message: string) =>
+    portalFetch<{ response?: string; message?: string }>(`/api/v1/deployments/${id}/chat`, {
+      method: "POST",
+      body: JSON.stringify({ message }),
+    }),
 };
 
 /** Fetch all deployments across all user orgs in parallel. */
