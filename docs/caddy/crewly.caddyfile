@@ -1,0 +1,14 @@
+crewly.chat {
+    reverse_proxy localhost:3000
+
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co https://fleet.marinachain.io"
+        Permissions-Policy "camera=(), microphone=(), geolocation=()"
+        Cross-Origin-Opener-Policy "same-origin"
+        -Server
+    }
+}
