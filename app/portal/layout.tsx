@@ -10,6 +10,7 @@ const navLinks = [
   { href: "/portal", label: "Dashboard" },
   { href: "/portal/agents", label: "My Agents" },
   { href: "/portal/deploy", label: "Deploy" },
+  { href: "/portal/use-cases", label: "Use Cases" },
   { href: "/portal/grant", label: "Grant" },
   { href: "/portal/roi", label: "ROI" },
 ];
