@@ -1,0 +1,145 @@
+"use client";
+
+import { motion } from "framer-motion";
+import CrewAvatar from "./CrewAvatar";
+
+const crew = [
+  { emoji: "\u{1F9D1}\u200D\u{1F4BC}", name: "Alex", role: "Ops Agent", color: "#E0FAF5" },
+  { emoji: "\u{1F469}\u200D\u{1F4BB}", name: "Sam", role: "Support Agent", color: "#FEF3C7" },
+  { emoji: "\u{1F9D4}", name: "Jordan", role: "Research Agent", color: "#FCE7F3" },
+];
+
+export default function Hero() {
+  return (
+    <section className="relative min-h-[100dvh] flex items-center overflow-hidden pt-20">
+      {/* Background blobs */}
+      <div className="absolute top-20 -left-32 w-96 h-96 bg-teal/10 blob rounded-full blur-3xl" />
+      <div className="absolute bottom-10 -right-20 w-80 h-80 bg-coral/8 blob-slow rounded-full blur-3xl" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-teal-muted/30 rounded-full blur-[120px]" />
+
+      <div className="relative mx-auto max-w-6xl px-6 py-20 md:py-32">
+        <div className="grid md:grid-cols-[1.2fr_1fr] gap-16 items-center">
+          {/* Left: Copy */}
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 bg-teal-muted/60 text-teal-deep text-sm font-medium px-4 py-1.5 rounded-full mb-6"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-teal-deep animate-pulse" />
+              Now onboarding new crews
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="font-[family-name:var(--font-display)] text-5xl md:text-6xl lg:text-7xl font-extrabold text-ink leading-[1.05] tracking-tight"
+            >
+              AI crew for{" "}
+              <span className="doodle-underline">
+                your business
+                <svg viewBox="0 0 200 12" preserveAspectRatio="none">
+                  <path d="M2 8 Q50 2, 100 7 T198 5" />
+                </svg>
+              </span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.25 }}
+              className="mt-6 text-lg md:text-xl text-ink-light leading-relaxed max-w-lg"
+            >
+              Tell us what you need. We deploy AI agents that join your team on
+              WhatsApp, Slack, Telegram — wherever your business already runs.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="mt-10 flex flex-wrap gap-4"
+            >
+              <a
+                href="#get-started"
+                className="inline-flex items-center gap-2 bg-ink text-cream font-semibold px-7 py-3.5 rounded-full hover:bg-ink/90 transition-all hover:shadow-lg hover:shadow-ink/10 text-base"
+              >
+                Build your crew
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path
+                    d="M3 8h10m0 0L9 4m4 4l-4 4"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#how-it-works"
+                className="inline-flex items-center gap-2 border border-ink/15 text-ink font-medium px-7 py-3.5 rounded-full hover:border-ink/30 hover:bg-ink/3 transition-all text-base"
+              >
+                See how it works
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Right: Crew avatars arriving */}
+          <div className="flex justify-center">
+            <div className="relative">
+              <svg
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                viewBox="0 0 300 200"
+                preserveAspectRatio="none"
+              >
+                <motion.path
+                  d="M50 100 Q100 60 150 100 T250 100"
+                  stroke="#2DD4BF"
+                  strokeWidth="1.5"
+                  strokeDasharray="6 4"
+                  fill="none"
+                  opacity="0.3"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ delay: 1, duration: 1.5, ease: "easeInOut" }}
+                />
+              </svg>
+
+              <div className="flex gap-6 md:gap-8">
+                {crew.map((member, i) => (
+                  <CrewAvatar
+                    key={member.name}
+                    {...member}
+                    delay={0.3 + i * 0.2}
+                    size="lg"
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Social proof strip */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+          className="mt-20 md:mt-28 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-ink-faint"
+        >
+          <span>Trusted by teams at</span>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 font-[family-name:var(--font-display)] font-semibold text-ink-light/60 text-base">
+            <span>MarinaChain</span>
+            <span className="text-ink-faint/30">/</span>
+            <span>Samsung</span>
+            <span className="text-ink-faint/30">/</span>
+            <span>SSA</span>
+            <span className="text-ink-faint/30">/</span>
+            <span>DHL</span>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
