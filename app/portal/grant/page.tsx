@@ -31,17 +31,29 @@ function checkEligibility(form: FormData): Result {
   const reasons: string[] = [];
   let eligible = true;
 
+  // H2: Validate required fields first, before business logic checks
+  if (!form.companyName.trim()) {
+    eligible = false;
+    reasons.push("Company name is required.");
+  }
+
+  if (!form.acraUen.trim()) {
+    eligible = false;
+    reasons.push("ACRA/UEN number is required.");
+  }
+
+  // H2: Validate SSIC is present before checking ICT prefix
+  if (!form.ssicCode || form.ssicCode.length < 2) {
+    eligible = false;
+    reasons.push("Valid SSIC code required (at least 2 digits).");
+  }
+
   // SSIC code check — non-ICT required (not starting with 61, 62, or 63)
   const ssicPrefix = form.ssicCode.slice(0, 2);
-  const isICT = ["61", "62", "63"].includes(ssicPrefix);
+  const isICT = form.ssicCode.length >= 2 && ["61", "62", "63"].includes(ssicPrefix);
   if (isICT) {
     eligible = false;
     reasons.push("SSIC code falls under ICT sector (61/62/63) — GenAIxDL targets non-ICT industries.");
-  }
-
-  if (!form.ssicCode || form.ssicCode.length < 2) {
-    eligible = false;
-    reasons.push("Valid SSIC code required.");
   }
 
   // Employee and turnover check — SME = <=200 employees OR <=S$100M turnover
@@ -58,26 +70,17 @@ function checkEligibility(form: FormData): Result {
     reasons.push("Annual turnover must be a positive number.");
   }
 
-  if (!form.companyName.trim()) {
-    eligible = false;
-    reasons.push("Company name is required.");
-  }
-
-  if (!form.acraUen.trim()) {
-    eligible = false;
-    reasons.push("ACRA/UEN number is required.");
-  }
-
   if (form.useCases.length === 0) {
     eligible = false;
     reasons.push("At least one use case must be selected.");
   }
 
-  // Determine funding rate
-  const isSME = (employees > 0 && employees <= 200) || (turnover > 0 && turnover <= 100);
-  const fundingRate = isSME ? 50 : 30;
+  // H3: Only determine funding rate when inputs are valid
+  const validNumbers = !isNaN(employees) && employees > 0 && !isNaN(turnover) && turnover > 0;
+  const isSME = validNumbers && ((employees <= 200) || (turnover <= 100));
+  const fundingRate = eligible ? (isSME ? 50 : 30) : 0;
 
-  if (!isICT && eligible) {
+  if (eligible) {
     if (isSME) {
       reasons.push("Qualifies as SME (<=200 employees or <=S$100M turnover) — 50% funding.");
     } else {

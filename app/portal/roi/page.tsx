@@ -19,17 +19,33 @@ interface ManualInputs {
   weeksDeployed: number;
 }
 
+/** H1: Deterministic hash from agent ID — stable across renders, no Math.random(). */
+function stableHash(id: string): number {
+  let h = 0;
+  for (let i = 0; i < id.length; i++) {
+    h = ((h << 5) - h + id.charCodeAt(i)) | 0;
+  }
+  return (h >>> 0) / 0xffffffff; // 0..1
+}
+
 function estimateUptime(health: InstanceHealth | null, agent: AppInstance): number {
   if (!health) return 0;
-  if (health.status === "online") return 95 + Math.random() * 5; // 95-100%
-  if (agent.status === "active") return 70 + Math.random() * 20;
+  const jitter = stableHash(agent.id) * 5; // 0-5% stable jitter
+  if (health.status === "online") return 95 + jitter;
+  if (agent.status === "active") return 70 + jitter * 4; // 70-90% range
   return 0;
 }
 
-function estimateHoursSaved(health: InstanceHealth | null, inputs: ManualInputs): number {
-  if (!health || health.status !== "online") return 0;
-  const skillMultiplier = Math.max(1, (health.skills?.length ?? 0) * 0.5);
-  return inputs.hoursPerAgentPerWeek * inputs.weeksDeployed * skillMultiplier;
+/** H4: Use uptime percentage as a multiplier so partially-active agents get partial credit. */
+function estimateHoursSaved(
+  health: InstanceHealth | null,
+  agent: AppInstance,
+  inputs: ManualInputs,
+): number {
+  const uptime = estimateUptime(health, agent);
+  if (uptime === 0) return 0;
+  const skillMultiplier = Math.max(1, (health?.skills?.length ?? 0) * 0.5);
+  return inputs.hoursPerAgentPerWeek * inputs.weeksDeployed * skillMultiplier * (uptime / 100);
 }
 
 export default function ROIDashboard() {
@@ -65,7 +81,7 @@ export default function ROIDashboard() {
             health,
             uptime: estimateUptime(health, agent),
             skillCount: health?.skills?.length ?? 0,
-            estimatedHoursSaved: estimateHoursSaved(health, inputs),
+            estimatedHoursSaved: 0, // M2: computed in recalculated, not here
           };
         });
         setMetrics(m);
@@ -79,10 +95,10 @@ export default function ROIDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Recalculate hours saved when inputs change
+  // Recalculate hours saved when inputs change (sole source of truth for this value)
   const recalculated = metrics.map((m) => ({
     ...m,
-    estimatedHoursSaved: estimateHoursSaved(m.health, inputs),
+    estimatedHoursSaved: estimateHoursSaved(m.health, m.agent, inputs),
   }));
 
   const totalAgents = recalculated.length;
