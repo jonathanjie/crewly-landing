@@ -3,7 +3,30 @@ export interface Org {
   name: string;
   slug: string;
   plan_tier: "free" | "starter" | "pro" | "enterprise";
+  member_count?: number;
 }
+
+export interface OrgMember {
+  id: string;
+  user_id: string;
+  email: string;
+  role: "owner" | "admin" | "member";
+  joined_at: string;
+}
+
+export const planLabels: Record<Org["plan_tier"], string> = {
+  free: "Free",
+  starter: "Starter",
+  pro: "Pro",
+  enterprise: "Enterprise",
+};
+
+export const planColors: Record<Org["plan_tier"], string> = {
+  free: "bg-ink/10 text-ink-light",
+  starter: "bg-teal/10 text-teal-deep",
+  pro: "bg-coral/10 text-coral-deep",
+  enterprise: "bg-amber-100 text-amber-700",
+};
 
 export interface AppTemplate {
   id: string;

@@ -1,5 +1,5 @@
 import { supabase } from "./supabase";
-import type { Org, AppTemplate, AppInstance, InstanceHealth } from "./types";
+import type { Org, OrgMember, AppTemplate, AppInstance, InstanceHealth } from "./types";
 
 async function portalFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
   const session = (await supabase?.auth.getSession())?.data.session;
@@ -27,6 +27,13 @@ async function portalFetch<T>(path: string, options: RequestInit = {}): Promise<
 
 export const api = {
   listOrgs: () => portalFetch<Org[]>("/api/v1/orgs"),
+  getOrgMembers: (orgSlug: string) =>
+    portalFetch<OrgMember[]>(`/api/v1/orgs/${encodeURIComponent(orgSlug)}/members`),
+  inviteOrgMember: (orgSlug: string, email: string) =>
+    portalFetch<{ status: string }>(`/api/v1/orgs/${encodeURIComponent(orgSlug)}/members`, {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    }),
   listTemplates: () => portalFetch<AppTemplate[]>("/api/v1/catalog"),
   listDeployments: (orgSlug: string) =>
     portalFetch<AppInstance[]>(`/api/v1/deployments?org_slug=${encodeURIComponent(orgSlug)}`),
