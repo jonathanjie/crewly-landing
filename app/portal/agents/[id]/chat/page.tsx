@@ -15,6 +15,11 @@ interface ChatMessage {
   timestamp: Date;
 }
 
+let _msgSeq = 0;
+function msgId(prefix: string): string {
+  return `${prefix}-${Date.now()}-${++_msgSeq}`;
+}
+
 const SAMPLE_MESSAGES: ChatMessage[] = [
   {
     id: "sample-1",
@@ -78,12 +83,14 @@ export default function AgentChat() {
     scrollToBottom();
   }, [messages, scrollToBottom]);
 
+  const MAX_MESSAGE_LENGTH = 4000;
+
   const handleSend = async () => {
     const text = input.trim();
-    if (!text || sending) return;
+    if (!text || sending || text.length > MAX_MESSAGE_LENGTH) return;
 
     const userMsg: ChatMessage = {
-      id: `user-${Date.now()}`,
+      id: msgId("user"),
       role: "user",
       content: text,
       timestamp: new Date(),
@@ -98,7 +105,7 @@ export default function AgentChat() {
         setMessages((prev) => [
           ...prev,
           {
-            id: `agent-${Date.now()}`,
+            id: msgId("agent"),
             role: "agent",
             content:
               "This is a preview of the chat experience. Once your agent is deployed and running, responses will come from your live AI agent.",
@@ -115,7 +122,7 @@ export default function AgentChat() {
       setMessages((prev) => [
         ...prev,
         {
-          id: `agent-${Date.now()}`,
+          id: msgId("agent"),
           role: "agent",
           content: res.response ?? res.message ?? "Agent responded.",
           timestamp: new Date(),
@@ -125,7 +132,7 @@ export default function AgentChat() {
       setMessages((prev) => [
         ...prev,
         {
-          id: `error-${Date.now()}`,
+          id: msgId("error"),
           role: "agent",
           content:
             "Unable to reach the agent right now. Please try again in a moment.",
@@ -273,12 +280,13 @@ export default function AgentChat() {
               ? "Type a message..."
               : "Try sending a message (preview mode)"
           }
+          maxLength={MAX_MESSAGE_LENGTH}
           className="flex-1 px-4 py-2.5 rounded-xl border border-ink/10 bg-cream text-ink placeholder:text-ink-faint focus:outline-none focus:ring-2 focus:ring-teal/40 text-sm"
           disabled={sending}
         />
         <button
           onClick={handleSend}
-          disabled={!input.trim() || sending}
+          disabled={!input.trim() || sending || input.trim().length > MAX_MESSAGE_LENGTH}
           className="bg-teal-deep text-white p-2.5 rounded-xl hover:bg-teal-deep/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0"
           aria-label="Send message"
         >

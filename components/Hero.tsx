@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import CrewAvatar from "./CrewAvatar";
 
 const crew = [
@@ -128,7 +129,7 @@ export default function Hero() {
           transition={{ delay: 1.0, duration: 0.6 }}
           className="mt-10 md:mt-20"
         >
-          <a
+          <Link
             href="/grant-info"
             className="inline-flex items-center gap-2 bg-teal/10 border border-teal/20 text-teal-deep text-xs font-medium px-4 py-2 rounded-full hover:bg-teal/15 hover:border-teal/30 transition-all group"
           >
@@ -161,7 +162,7 @@ export default function Hero() {
                 strokeLinejoin="round"
               />
             </svg>
-          </a>
+          </Link>
         </motion.div>
 
         {/* Social proof strip */}

@@ -6,20 +6,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/lib/api";
 import type { Org, AppTemplate } from "@/lib/types";
+import { categoryLabels } from "@/lib/types";
 
 type Step = "template" | "configure" | "deploy";
-
-const categoryLabels: Record<string, string> = {
-  "knowledge-management": "Knowledge Mining",
-  "customer-engagement": "Customer Engagement",
-  "operations-automation": "Operations Automation",
-  "content-generation": "Content Generation",
-  "team-productivity": "Team Ops",
-};
 
 export default function DeployWizard() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const preselectedSlug = searchParams.get("template");
   const [step, setStep] = useState<Step>("template");
   const [templates, setTemplates] = useState<AppTemplate[]>([]);
   const [orgs, setOrgs] = useState<Org[]>([]);
@@ -36,9 +30,8 @@ export default function DeployWizard() {
         setTemplates(t);
         setOrgs(o);
         // Auto-select template from query param (e.g. /portal/deploy?template=knowledge-hub)
-        const preselect = searchParams.get("template");
-        if (preselect) {
-          const match = t.find((tpl) => tpl.slug === preselect);
+        if (preselectedSlug) {
+          const match = t.find((tpl) => tpl.slug === preselectedSlug);
           if (match) {
             setSelectedTemplate(match);
             setStep("configure");
@@ -50,7 +43,8 @@ export default function DeployWizard() {
         setLoading(false);
       }
     })();
-  }, [searchParams]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [preselectedSlug]);
 
   const handleDeploy = async () => {
     if (!selectedTemplate || !agentName.trim() || orgs.length === 0) return;

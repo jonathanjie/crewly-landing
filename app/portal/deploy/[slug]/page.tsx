@@ -6,14 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/lib/api";
 import type { AppTemplate } from "@/lib/types";
-
-const categoryLabels: Record<string, string> = {
-  "knowledge-management": "Knowledge Mining",
-  "customer-engagement": "Customer Engagement",
-  "operations-automation": "Operations Automation",
-  "content-generation": "Content Generation",
-  "team-productivity": "Team Ops",
-};
+import { categoryLabels } from "@/lib/types";
 
 /** Map categories to integration blocks typically required. */
 const categoryIntegrations: Record<string, string[]> = {

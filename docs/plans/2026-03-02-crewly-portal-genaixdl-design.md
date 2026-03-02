@@ -154,7 +154,7 @@ Body: { status, notes }
 |--------|-------|-------------|
 | **S1** | Portal foundation | Login, AuthContext, API client, PortalLayout, Dashboard, My Agents |
 | **S2** | Deploy + detail | Deploy Wizard, Agent Detail (all tabs), template catalog integration |
-| **S3** | GenAIxDL features | Grant eligibility, application tracker, ROI dashboard, PDF export |
+| **S3** | Chat + use cases + polish | Agent chat UI, template detail, use case mapping, error boundary, IMDA badge |
 | **S4** | Use case templates | Content Creator + Analytics Assistant archetypes + skill content |
 | **S5** | Polish + dogfood | Mobile responsive, error states, loading, e2e test with real credentials |
 
@@ -188,4 +188,31 @@ No architectural changes needed — just deployment config.
 ### Routes (cumulative)
 - / (landing), /login, /grant-info (public)
 - /portal, /portal/agents, /portal/agents/[id], /portal/deploy, /portal/grant, /portal/roi
+- /api/fleet/[...path] (proxy)
+
+---
+
+## Sprint 3 Completion Notes (2026-03-02)
+
+### Delivered
+- Agent chat UI (/portal/agents/[id]/chat) — message bubbles, typing indicator, preview/live mode, max 4000 char input
+- Template detail page (/portal/deploy/[slug]) — skills, integration blocks, config schema preview, deploy CTA
+- GenAIxDL use case mapping page (/portal/use-cases) — 5 IMDA categories with template links, funding callout
+- Portal error boundary (app/portal/error.tsx) — branded error page with retry + dashboard link
+- IMDA GenAIxDL Funded badge on landing hero — animated, links to /grant-info
+- Agent detail chat tab — navigates to dedicated /chat subpage with external-link icon
+- Deploy wizard searchParams auto-select — /portal/deploy?template=slug skips to configure step
+- sendChat API method — POST /api/v1/deployments/{id}/chat via portalFetch
+
+### Code Review Fixes Applied
+- H1: Chat message IDs use monotonic sequence counter (msgId) — prevents React key collisions on rapid sends
+- H2: categoryLabels extracted to lib/types.ts — DRY across deploy wizard + template detail
+- H4: Chat input capped at 4000 chars — maxLength on input + validation in handleSend
+- M1: Deploy wizard useEffect depends on extracted string, not searchParams object — eliminates re-renders
+- M2: Agent detail handleAction clears error state and catches refresh failures after restart/stop
+- L1: Hero IMDA badge uses next/link instead of plain anchor — client-side navigation
+
+### Routes (cumulative)
+- / (landing), /login, /grant-info (public)
+- /portal, /portal/agents, /portal/agents/[id], /portal/agents/[id]/chat, /portal/deploy, /portal/deploy/[slug], /portal/use-cases, /portal/grant, /portal/roi
 - /api/fleet/[...path] (proxy)

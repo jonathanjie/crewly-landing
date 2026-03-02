@@ -44,10 +44,13 @@ export default function AgentDetail() {
 
   const handleAction = async (action: "restart" | "stop") => {
     setActionLoading(true);
+    setError(null);
     try {
       if (action === "restart") await api.restartDeployment(id);
       else await api.stopDeployment(id);
-      await refresh();
+      await refresh().catch(() => {
+        // Refresh may fail briefly after action — non-fatal
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : `Failed to ${action} agent`);
     } finally {

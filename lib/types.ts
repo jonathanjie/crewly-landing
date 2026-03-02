@@ -45,6 +45,14 @@ export interface InstanceHealth {
   channels: Record<string, { enabled: boolean }> | null;
 }
 
+export const categoryLabels: Record<string, string> = {
+  "knowledge-management": "Knowledge Mining",
+  "customer-engagement": "Customer Engagement",
+  "operations-automation": "Operations Automation",
+  "content-generation": "Content Generation",
+  "team-productivity": "Team Ops",
+};
+
 export function statusDotColor(
   agentStatus: AppInstance["status"],
   healthStatus?: InstanceHealth["status"],
