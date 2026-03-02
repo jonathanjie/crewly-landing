@@ -75,7 +75,7 @@ export default function Pricing() {
           <p className="text-sm font-semibold text-teal-deep uppercase tracking-widest mb-3">
             Pricing
           </p>
-          <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl font-bold text-ink tracking-tight">
+          <h2 className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl md:text-5xl font-bold text-ink tracking-tight">
             Simple, transparent pricing
           </h2>
           <p className="mt-4 text-ink-light text-lg max-w-lg mx-auto">
@@ -89,7 +89,7 @@ export default function Pricing() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2, duration: 0.4 }}
-            className="mt-6 inline-flex items-center gap-2 bg-coral/10 text-coral-deep px-5 py-2.5 rounded-full text-sm font-semibold"
+            className="mt-6 inline-flex items-center gap-2 bg-coral/10 text-coral-deep px-4 sm:px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path
@@ -112,7 +112,7 @@ export default function Pricing() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              className={`relative rounded-3xl p-8 md:p-10 border transition-all ${plan.style} ${
+              className={`relative rounded-3xl p-6 sm:p-8 md:p-10 border transition-all ${plan.style} ${
                 plan.popular ? "md:-mt-4 md:mb-0" : ""
               }`}
             >

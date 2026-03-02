@@ -319,7 +319,7 @@ export default function UseCases() {
           <p className="text-sm font-semibold text-coral uppercase tracking-widest mb-3">
             Use cases
           </p>
-          <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl font-bold text-ink tracking-tight">
+          <h2 className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl md:text-5xl font-bold text-ink tracking-tight">
             Every team needs a crew
           </h2>
           <p className="mt-4 text-ink-light text-lg max-w-xl mx-auto">
@@ -329,7 +329,7 @@ export default function UseCases() {
         </motion.div>
 
         {/* Category tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
+        <div className="flex overflow-x-auto sm:flex-wrap sm:justify-center gap-2 mb-12 pb-1 -mx-6 px-6 sm:mx-0 sm:px-0 scrollbar-hide">
           {categories.map((cat) => (
             <button
               key={cat.id}
@@ -337,7 +337,7 @@ export default function UseCases() {
                 setActiveCategory(cat.id);
                 setActiveCase(null);
               }}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap flex-shrink-0 ${
                 activeCategory === cat.id
                   ? "bg-ink text-cream shadow-sm"
                   : "bg-ink/5 text-ink-light hover:bg-ink/10"
@@ -353,54 +353,77 @@ export default function UseCases() {
           <div className="grid sm:grid-cols-2 gap-4">
             <AnimatePresence mode="popLayout">
               {filtered.map((c) => (
-                <motion.button
+                <motion.div
                   key={c.slug}
                   layout
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3 }}
-                  onClick={() =>
-                    setActiveCase(activeCase === c.slug ? null : c.slug)
-                  }
-                  className={`text-left relative rounded-2xl p-6 bg-gradient-to-br ${c.gradient} border ${c.borderColor} transition-all group overflow-hidden ${
-                    activeCase === c.slug
-                      ? "ring-2 ring-teal shadow-lg"
-                      : "hover:shadow-md"
-                  }`}
                 >
-                  <span className="absolute top-4 right-5 text-3xl opacity-[0.12] group-hover:opacity-[0.18] transition-opacity select-none">
-                    {c.emoji}
-                  </span>
+                  <button
+                    onClick={() =>
+                      setActiveCase(activeCase === c.slug ? null : c.slug)
+                    }
+                    className={`w-full text-left relative rounded-2xl p-5 sm:p-6 bg-gradient-to-br ${c.gradient} border ${c.borderColor} transition-all group overflow-hidden ${
+                      activeCase === c.slug
+                        ? "ring-2 ring-teal shadow-lg"
+                        : "hover:shadow-md"
+                    }`}
+                  >
+                    <span className="absolute top-4 right-5 text-3xl opacity-[0.12] group-hover:opacity-[0.18] transition-opacity select-none">
+                      {c.emoji}
+                    </span>
 
-                  <h3 className="font-[family-name:var(--font-display)] text-lg font-bold text-ink mb-2 relative">
-                    {c.title}
-                  </h3>
-                  <p className="text-sm text-ink-light leading-relaxed mb-4 relative line-clamp-2">
-                    {c.description}
-                  </p>
+                    <h3 className="font-[family-name:var(--font-display)] text-base sm:text-lg font-bold text-ink mb-2 relative pr-8">
+                      {c.title}
+                    </h3>
+                    <p className="text-sm text-ink-light leading-relaxed mb-4 relative line-clamp-2">
+                      {c.description}
+                    </p>
 
-                  <div className="flex flex-wrap gap-1.5 relative">
-                    {c.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-white/60 text-ink-light border border-ink/5"
+                    <div className="flex flex-wrap gap-1.5 relative">
+                      {c.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-white/60 text-ink-light border border-ink/5"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Click hint */}
+                    <span className="absolute bottom-4 right-5 text-[11px] text-ink-faint opacity-0 group-hover:opacity-100 transition-opacity hidden sm:inline">
+                      Click to demo
+                    </span>
+                  </button>
+
+                  {/* Inline chat demo for mobile */}
+                  <AnimatePresence>
+                    {activeCase === c.slug && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="lg:hidden overflow-hidden mt-3"
                       >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Click hint */}
-                  <span className="absolute bottom-4 right-5 text-[11px] text-ink-faint opacity-0 group-hover:opacity-100 transition-opacity">
-                    Click to demo
-                  </span>
-                </motion.button>
+                        <ChatDemo
+                          messages={c.chatDemo}
+                          agentName={c.agentName}
+                          agentEmoji={c.emoji}
+                          isActive={true}
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               ))}
             </AnimatePresence>
           </div>
 
-          {/* Chat demo panel */}
+          {/* Chat demo panel — desktop only */}
           <div className="hidden lg:block">
             <div className="sticky top-24">
               <AnimatePresence mode="wait">

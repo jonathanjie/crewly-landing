@@ -37,7 +37,7 @@ export default function Testimonials() {
           transition={{ duration: 0.5 }}
           className="text-center mb-14"
         >
-          <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl font-bold text-ink tracking-tight">
+          <h2 className="font-[family-name:var(--font-display)] text-2xl sm:text-3xl md:text-4xl font-bold text-ink tracking-tight">
             Teams love their crew
           </h2>
         </motion.div>
@@ -50,7 +50,7 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="bg-cream-warm/40 rounded-3xl p-8 border border-ink/4 relative"
+              className="bg-cream-warm/40 rounded-3xl p-6 sm:p-8 border border-ink/4 relative"
             >
               {/* Quote mark */}
               <span className="absolute top-6 right-8 font-[family-name:var(--font-display)] text-5xl text-ink/5 select-none">

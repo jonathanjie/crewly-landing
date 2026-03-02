@@ -53,7 +53,7 @@ export default function CTA() {
             <div className="w-3 h-3 rounded-full bg-teal-deep" />
           </div>
 
-          <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl lg:text-6xl font-extrabold text-cream tracking-tight leading-tight">
+          <h2 className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-cream tracking-tight leading-tight">
             Ready to build
             <br />
             your crew?

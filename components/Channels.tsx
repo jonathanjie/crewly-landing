@@ -74,7 +74,7 @@ export default function Channels() {
           </p>
         </motion.div>
 
-        <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6">
           {channels.map((ch, i) => (
             <motion.div
               key={ch.name}
@@ -83,10 +83,10 @@ export default function Channels() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.4 }}
               whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="flex items-center gap-3 bg-white rounded-2xl px-6 py-4 border border-ink/5 shadow-sm hover:shadow-md transition-shadow"
+              className="flex items-center gap-2 sm:gap-3 bg-white rounded-xl sm:rounded-2xl px-4 sm:px-6 py-3 sm:py-4 border border-ink/5 shadow-sm hover:shadow-md transition-shadow"
             >
               <span style={{ color: ch.color }}>{ch.logo}</span>
-              <span className="font-[family-name:var(--font-display)] font-semibold text-ink">
+              <span className="font-[family-name:var(--font-display)] font-semibold text-ink text-sm sm:text-base">
                 {ch.name}
               </span>
             </motion.div>

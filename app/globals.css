@@ -138,3 +138,13 @@ html {
   animation: draw 1s ease-out forwards;
   animation-delay: 0.8s;
 }
+
+/* Hide scrollbar for horizontal scroll areas */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

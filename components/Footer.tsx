@@ -16,7 +16,7 @@ export default function Footer() {
           </div>
 
           {/* Links */}
-          <div className="flex items-center gap-6 text-sm text-ink-light">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm text-ink-light">
             <a href="#how-it-works" className="hover:text-ink transition-colors">
               How it works
             </a>

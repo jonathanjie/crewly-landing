@@ -91,7 +91,7 @@ export default function HowItWorks() {
           <p className="text-sm font-semibold text-teal-deep uppercase tracking-widest mb-3">
             How it works
           </p>
-          <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl font-bold text-ink tracking-tight">
+          <h2 className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl md:text-5xl font-bold text-ink tracking-tight">
             Three steps to your crew
           </h2>
         </motion.div>
@@ -106,7 +106,7 @@ export default function HowItWorks() {
               transition={{ delay: i * 0.15, duration: 0.5 }}
               className="relative group"
             >
-              <div className="bg-white rounded-3xl p-8 md:p-10 border border-ink/5 hover:border-ink/10 transition-all hover:shadow-xl hover:shadow-ink/3 h-full">
+              <div className="bg-white rounded-3xl p-6 sm:p-8 md:p-10 border border-ink/5 hover:border-ink/10 transition-all hover:shadow-xl hover:shadow-ink/3 h-full">
                 {/* Step number */}
                 <span className="font-[family-name:var(--font-display)] text-5xl font-extrabold text-ink/6 absolute top-6 right-8">
                   {step.number}
