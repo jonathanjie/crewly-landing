@@ -1,7 +1,7 @@
 // app/portal/layout.tsx
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
@@ -18,10 +18,16 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
   const { session, loading, signOut } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     if (!loading && !session) router.replace("/login");
   }, [loading, session, router]);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
 
   if (loading) {
     return (
@@ -51,8 +57,8 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
               </span>
             </Link>
 
-            {/* Links */}
-            <div className="flex gap-1">
+            {/* Desktop Links — hidden on mobile */}
+            <div className="hidden sm:flex gap-1">
               {navLinks.map(({ href, label }) => (
                 <Link
                   key={href}
@@ -69,17 +75,77 @@ export default function PortalLayout({ children }: { children: React.ReactNode }
             </div>
           </div>
 
-          {/* Right: user + sign out */}
+          {/* Right: user + sign out (desktop) + hamburger (mobile) */}
           <div className="flex items-center gap-3">
             <span className="text-xs text-ink-light hidden sm:inline">
               {session.user.email}
             </span>
             <button
               onClick={async () => { await signOut(); router.push("/login"); }}
-              className="text-xs text-ink-faint hover:text-ink-light transition-colors"
+              className="text-xs text-ink-faint hover:text-ink-light transition-colors hidden sm:inline"
             >
               Sign out
             </button>
+
+            {/* Hamburger — visible on mobile only */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="sm:hidden p-2 -mr-2"
+              aria-label="Toggle menu"
+            >
+              <div className="w-5 flex flex-col gap-1">
+                <span
+                  className={`block h-0.5 bg-ink transition-all duration-200 ${
+                    mobileOpen ? "rotate-45 translate-y-1.5" : ""
+                  }`}
+                />
+                <span
+                  className={`block h-0.5 bg-ink transition-all duration-200 ${
+                    mobileOpen ? "opacity-0" : ""
+                  }`}
+                />
+                <span
+                  className={`block h-0.5 bg-ink transition-all duration-200 ${
+                    mobileOpen ? "-rotate-45 -translate-y-1.5" : ""
+                  }`}
+                />
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu — slides down */}
+        <div
+          className={`sm:hidden overflow-hidden transition-all duration-200 ease-in-out ${
+            mobileOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          <div className="px-6 py-4 border-t border-ink/5 bg-white/95 backdrop-blur-lg space-y-1">
+            {navLinks.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className={`block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  pathname === href || (href !== "/portal" && pathname.startsWith(href))
+                    ? "bg-teal/10 text-teal-deep"
+                    : "text-ink-light hover:text-ink hover:bg-ink/5"
+                }`}
+              >
+                {label}
+              </Link>
+            ))}
+
+            <div className="border-t border-ink/5 pt-3 mt-3">
+              <p className="text-xs text-ink-faint px-3 mb-2 truncate">
+                {session.user.email}
+              </p>
+              <button
+                onClick={async () => { await signOut(); router.push("/login"); }}
+                className="w-full text-left px-3 py-2.5 rounded-lg text-sm text-coral-deep hover:bg-coral/5 transition-colors"
+              >
+                Sign out
+              </button>
+            </div>
           </div>
         </div>
       </nav>
