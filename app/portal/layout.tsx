@@ -13,6 +13,8 @@ const navLinks = [
   { href: "/portal/use-cases", label: "Use Cases" },
   { href: "/portal/grant", label: "Grant" },
   { href: "/portal/roi", label: "ROI" },
+  { href: "/portal/org", label: "Org" },
+  { href: "/portal/settings", label: "Settings" },
 ];
 
 export default function PortalLayout({ children }: { children: React.ReactNode }) {
