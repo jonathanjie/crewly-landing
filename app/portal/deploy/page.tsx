@@ -2,7 +2,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { api } from "@/lib/api";
 import type { Org, AppTemplate } from "@/lib/types";
 
@@ -18,6 +19,7 @@ const categoryLabels: Record<string, string> = {
 
 export default function DeployWizard() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [step, setStep] = useState<Step>("template");
   const [templates, setTemplates] = useState<AppTemplate[]>([]);
   const [orgs, setOrgs] = useState<Org[]>([]);
@@ -33,13 +35,22 @@ export default function DeployWizard() {
         const [t, o] = await Promise.all([api.listTemplates(), api.listOrgs()]);
         setTemplates(t);
         setOrgs(o);
+        // Auto-select template from query param (e.g. /portal/deploy?template=knowledge-hub)
+        const preselect = searchParams.get("template");
+        if (preselect) {
+          const match = t.find((tpl) => tpl.slug === preselect);
+          if (match) {
+            setSelectedTemplate(match);
+            setStep("configure");
+          }
+        }
       } catch {
         setError("Failed to load templates");
       } finally {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [searchParams]);
 
   const handleDeploy = async () => {
     if (!selectedTemplate || !agentName.trim() || orgs.length === 0) return;
@@ -122,11 +133,20 @@ export default function DeployWizard() {
                         {t.name}
                       </h3>
                       <p className="text-xs text-ink-light line-clamp-2">{t.description}</p>
-                      {t.category && (
-                        <span className="text-[10px] mt-2 inline-block px-2 py-0.5 rounded-full bg-ink/5 text-ink-faint">
-                          {categoryLabels[t.category] ?? t.category}
-                        </span>
-                      )}
+                      <div className="flex items-center gap-2 mt-2">
+                        {t.category && (
+                          <span className="text-[10px] inline-block px-2 py-0.5 rounded-full bg-ink/5 text-ink-faint">
+                            {categoryLabels[t.category] ?? t.category}
+                          </span>
+                        )}
+                        <Link
+                          href={`/portal/deploy/${t.slug}`}
+                          onClick={(e) => e.stopPropagation()}
+                          className="text-[10px] text-teal-deep hover:underline"
+                        >
+                          View details
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </button>
