@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth-context";
 
@@ -95,9 +96,9 @@ export default function LoginPage() {
         </p>
 
         <div className="text-center mt-8">
-          <a href="/" className="text-xs text-ink-faint hover:text-ink-light transition-colors">
+          <Link href="/" className="text-xs text-ink-faint hover:text-ink-light transition-colors">
             &larr; Back to crewly.chat
-          </a>
+          </Link>
         </div>
       </div>
     </div>

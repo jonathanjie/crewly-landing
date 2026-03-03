@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { api } from "@/lib/api";
 import type { Org, OrgMember } from "@/lib/types";
 import { planLabels, planColors } from "@/lib/types";
@@ -173,7 +174,7 @@ export default function OrgPage() {
                     <p className="text-sm text-ink-light mb-3">
                       Need more agents or team seats? Upgrade your plan.
                     </p>
-                    <a
+                    <Link
                       href="/#pricing"
                       className="inline-flex items-center gap-1.5 bg-teal-deep text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-teal-deep/90 transition-colors"
                     >
@@ -181,7 +182,7 @@ export default function OrgPage() {
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                       </svg>
-                    </a>
+                    </Link>
                   </div>
                 )}
               </section>

@@ -121,7 +121,26 @@ See `.env.example` for required variables. Key ones:
 ## Development
 
 ```bash
-npm run dev     # Start dev server (port 3000)
-npm run build   # Production build
-npm run lint    # ESLint
+npm run dev          # Start dev server (port 3000)
+npm run build        # Production build
+npm run lint         # ESLint
+npm run test         # Vitest (single run, 28 tests)
+npm run test:watch   # Vitest (watch mode)
 ```
+
+## Testing
+
+Tests live in `__tests__/` directories adjacent to their source:
+- `lib/__tests__/types.test.ts` — Plan labels, category labels, statusDotColor helper
+- `lib/__tests__/api.test.ts` — API client methods, error handling, fetchAllDeployments
+- `lib/__tests__/supabase.test.ts` — Null-safe client initialization
+- `app/__tests__/grant-info.test.tsx` — Grant info page rendering (5 categories, eligibility, CTAs)
+
+Config: `vitest.config.ts` (jsdom environment, `@` path alias, setup file for jest-dom matchers).
+
+## Documentation
+
+- `README.md` — Project overview, setup, env vars, design system
+- `ARCHITECTURE.md` — System design, data flow diagrams, key design decisions
+- `CHANGELOG.md` — Sprint-by-sprint release history
+- `docs/plans/2026-03-02-crewly-portal-genaixdl-design.md` — Full design + sprint completion notes

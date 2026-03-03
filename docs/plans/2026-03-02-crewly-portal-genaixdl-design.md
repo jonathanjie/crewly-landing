@@ -155,8 +155,8 @@ Body: { status, notes }
 | **S1** | Portal foundation | Login, AuthContext, API client, PortalLayout, Dashboard, My Agents |
 | **S2** | Deploy + detail | Deploy Wizard, Agent Detail (all tabs), template catalog integration |
 | **S3** | Chat + use cases + polish | Agent chat UI, template detail, use case mapping, error boundary, IMDA badge |
-| **S4** | Use case templates | Content Creator + Analytics Assistant archetypes + skill content |
-| **S5** | Polish + dogfood | Mobile responsive, error states, loading, e2e test with real credentials |
+| **S4** | Settings + org + polish | Settings page, Org page, 404, loading skeleton, Caddy config, deploy script |
+| **S5** | *Backlog* | Mobile responsive polish, error states, e2e test with real credentials |
 
 ---
 

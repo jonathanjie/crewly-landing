@@ -92,7 +92,6 @@ export default function ROIDashboard() {
       }
     })();
     // inputs not in deps — we recalculate on render for the before/after section
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Recalculate hours saved when inputs change (sole source of truth for this value)

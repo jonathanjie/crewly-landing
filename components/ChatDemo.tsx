@@ -23,17 +23,18 @@ export default function ChatDemo({
 }: ChatDemoProps) {
   const [visibleMessages, setVisibleMessages] = useState<Message[]>([]);
   const [typing, setTyping] = useState(false);
+  const [prevIsActive, setPrevIsActive] = useState(isActive);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!isActive) {
-      setVisibleMessages([]);
-      setTyping(false);
-      return;
-    }
-
+  // Reset state when isActive changes (derived state, no effect needed)
+  if (prevIsActive !== isActive) {
+    setPrevIsActive(isActive);
     setVisibleMessages([]);
     setTyping(false);
+  }
+
+  useEffect(() => {
+    if (!isActive) return;
 
     let cancelled = false;
     let timeout: ReturnType<typeof setTimeout>;
